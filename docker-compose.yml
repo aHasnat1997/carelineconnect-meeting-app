@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: carelineconnect-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: examplepassword
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: carelineconnect-api
+    ports:
+      - "4000:4000"
+    environment:
+      - DATABASE_URL=mongodb://root:examplepassword@mongodb:27017/carelineconnect?authSource=admin
+      - PORT=4000
+    depends_on:
+      - mongodb
+
+  ui:
+    build:
+      context: .
+      dockerfile: apps/ui/Dockerfile
+    container_name: carelineconnect-ui
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+
+volumes:
+  mongo_data:

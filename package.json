@@ -1,0 +1,20 @@
+{
+  "name": "carelineconnect-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "bun --filter \"*\" run dev",
+    "build": "bun --filter \"*\" run build",
+    "db:generate": "bun --filter db generate",
+    "db:push": "bun --filter db push"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/express-serve-static-core": "^4.19.5",
+    "@types/node": "^26.1.1",
+    "@types/qs": "^6.12.0"
+  }
+}
