@@ -2,10 +2,11 @@
   "name": "carelineconnect-monorepo",
   "private": true,
   "scripts": {
-    "dev": "bun --filter \"*\" run dev",
-    "build": "bun --filter \"*\" run build",
-    "db:generate": "bun --filter db generate",
-    "db:push": "bun --filter db push"
+    "dev": "bun run --filter '*' dev",
+    "build": "bun run --filter '*' build",
+    "db:generate": "bun run --filter '@repo/db' generate",
+    "db:push": "bun run --filter '@repo/db' push",
+    "db:studio": "bun run --filter '@repo/db' studio"
   },
   "workspaces": [
     "apps/*",

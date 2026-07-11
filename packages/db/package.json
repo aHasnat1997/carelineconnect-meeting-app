@@ -5,13 +5,15 @@
   "types": "src/index.ts",
   "scripts": {
     "generate": "prisma generate",
-    "push": "prisma db push"
+    "push": "prisma db push",
+    "studio": "prisma studio"
   },
   "dependencies": {
-    "@prisma/client": "^5.15.0"
+    "@prisma/client": "^6"
   },
   "devDependencies": {
-    "prisma": "^5.15.0",
+    "dotenv": "^17.4.2",
+    "prisma": "^6",
     "typescript": "^5.5.0"
   }
 }

@@ -13,6 +13,12 @@ export const JoinMeetingSchema = z.object({
 });
 export type JoinMeetingInput = z.infer<typeof JoinMeetingSchema>;
 
+export const GetSignatureSchema = z.object({
+  meetingNumber: z.string(),
+  role: z.number().int().min(0).max(1),
+});
+export type GetSignatureInput = z.infer<typeof GetSignatureSchema>;
+
 export const UserSchema = z.object({
   id: z.string(),
   email: z.string().email(),
