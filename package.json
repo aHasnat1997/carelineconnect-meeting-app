@@ -2,8 +2,8 @@
   "name": "carelineconnect-monorepo",
   "private": true,
   "scripts": {
-    "dev": "bun run --filter '*' dev",
-    "build": "bun run --filter '*' build",
+    "dev": "node api.js && bun run --filter '*' dev",
+    "build": "node api.js && bun run --filter '*' build",
     "db:generate": "bun run --filter '@repo/db' generate",
     "db:push": "bun run --filter '@repo/db' push",
     "db:studio": "bun run --filter '@repo/db' studio"

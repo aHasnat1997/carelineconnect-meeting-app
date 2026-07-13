@@ -338,7 +338,7 @@ export default function AdminDashboard() {
             borderBottom: "1px solid rgba(255,255,255,0.06)",
           }}>
             {["Meeting Topic", "Zoom ID", "Created", "Actions"].map((h) => (
-              <div key={h} style={{ fontSize: "0.7rem", fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              <div key={h} style={{ fontSize: "0.7rem", fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", textAlign: h === "Actions" ? "center" : "left" }}>
                 {h}
               </div>
             ))}
@@ -494,7 +494,7 @@ function MeetingRow({ meeting, idx, copiedId, onCopy, onJoin, onDelete, isDeleti
       </div>
 
       {/* Actions */}
-      <div style={{ display: "flex", gap: "0.5rem" }}>
+      <div style={{ display: "flex", gap: "0.5rem", justifyContent: "center" }}>
         <button
           id={`copy-link-btn-${meeting.id}`}
           onClick={() => onCopy(meeting.id)}
