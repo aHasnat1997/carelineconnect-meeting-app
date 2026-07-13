@@ -6,10 +6,11 @@ interface Props {
   meetingNumber: string;
   topic: string;
   displayName: string;
+  role?: 0 | 1;
   onLeave: () => void;
 }
 
-export default function MeetingRoom({ meetingNumber, topic, displayName, onLeave }: Props) {
+export default function MeetingRoom({ meetingNumber, topic, displayName, role = 0, onLeave }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const clientRef = useRef<ReturnType<typeof ZoomMtgEmbedded.createClient> | null>(null);
   const [status, setStatus] = useState<"loading" | "joined" | "error">("loading");
@@ -39,7 +40,7 @@ export default function MeetingRoom({ meetingNumber, topic, displayName, onLeave
       },
     });
 
-    getSignature.mutateAsync({ meetingNumber, role: 0 }).then(({ signature, sdkKey }) => {
+    getSignature.mutateAsync({ meetingNumber, role }).then(({ signature, sdkKey }) => {
       client.join({
         sdkKey,
         signature,
@@ -67,6 +68,19 @@ export default function MeetingRoom({ meetingNumber, topic, displayName, onLeave
         <div className="flex items-center gap-3">
           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
           <span className="text-white font-semibold text-sm">{topic}</span>
+          {role === 1 && (
+            <span style={{
+              background: "rgba(99,102,241,0.2)",
+              color: "#a5b4fc",
+              fontSize: "0.65rem",
+              fontWeight: 700,
+              padding: "0.15rem 0.5rem",
+              borderRadius: 6,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              border: "1px solid rgba(99,102,241,0.3)",
+            }}>Host</span>
+          )}
         </div>
         <div className="flex items-center gap-4">
           <span className="text-gray-400 text-xs">{displayName}</span>
@@ -98,3 +112,4 @@ export default function MeetingRoom({ meetingNumber, topic, displayName, onLeave
     </div>
   );
 }
+

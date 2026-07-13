@@ -1,5 +1,5 @@
 import { router, publicProcedure } from "../trpc";
-import { CreateMeetingSchema, JoinMeetingSchema, GetSignatureSchema } from "@repo/types";
+import { CreateMeetingSchema, JoinMeetingSchema, GetSignatureSchema, ListMeetingsSchema, GetMeetingByIdSchema, DeleteMeetingSchema } from "@repo/types";
 import jwt from "jsonwebtoken";
 
 async function getZoomAccessToken(): Promise<string> {
@@ -74,9 +74,46 @@ export const meetingRouter = router({
       const iat = Math.round(Date.now() / 1000) - 30;
       const exp = iat + 60 * 60 * 2;
       const signature = jwt.sign(
-        { sdkKey: ZOOM_SDK_KEY, mn: input.meetingNumber, role: input.role, iat, exp },
-        ZOOM_SDK_SECRET
+        { appKey: ZOOM_SDK_KEY, mn: input.meetingNumber, role: input.role, iat, exp, tokenExp: exp },
+        ZOOM_SDK_SECRET,
+        { header: { alg: "HS256", typ: "JWT" } }
       );
       return { signature, sdkKey: ZOOM_SDK_KEY };
     }),
+
+  list: publicProcedure
+    .input(ListMeetingsSchema)
+    .query(async ({ input, ctx }) => {
+      const [meetings, total] = await Promise.all([
+        ctx.prisma.meeting.findMany({
+          orderBy: { createdAt: "desc" },
+          skip: (input.page - 1) * input.limit,
+          take: input.limit,
+        }),
+        ctx.prisma.meeting.count(),
+      ]);
+      return { meetings, total, page: input.page, limit: input.limit };
+    }),
+
+  getByDbId: publicProcedure
+    .input(GetMeetingByIdSchema)
+    .query(async ({ input, ctx }) => {
+      const meeting = await ctx.prisma.meeting.findUnique({
+        where: { id: input.id },
+      });
+      if (!meeting) throw new Error("Meeting not found");
+      return meeting;
+    }),
+
+  delete: publicProcedure
+    .input(DeleteMeetingSchema)
+    .mutation(async ({ input, ctx }) => {
+      const meeting = await ctx.prisma.meeting.findUnique({
+        where: { id: input.id },
+      });
+      if (!meeting) throw new Error("Meeting not found");
+      await ctx.prisma.meeting.delete({ where: { id: input.id } });
+      return { success: true, id: input.id };
+    }),
 });
+

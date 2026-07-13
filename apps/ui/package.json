@@ -16,6 +16,8 @@
     "@zoom/meetingsdk": "^6.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.1",
+    "sonner": "^2.0.7",
     "tailwindcss": "^4.0.0"
   },
   "devDependencies": {

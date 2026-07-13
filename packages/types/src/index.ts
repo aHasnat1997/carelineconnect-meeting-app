@@ -25,3 +25,19 @@ export const UserSchema = z.object({
   name: z.string().optional(),
 });
 export type User = z.infer<typeof UserSchema>;
+
+export const ListMeetingsSchema = z.object({
+  page: z.number().int().min(1).optional().default(1),
+  limit: z.number().int().min(1).max(100).optional().default(20),
+});
+export type ListMeetingsInput = z.infer<typeof ListMeetingsSchema>;
+
+export const GetMeetingByIdSchema = z.object({
+  id: z.string(),
+});
+export type GetMeetingByIdInput = z.infer<typeof GetMeetingByIdSchema>;
+
+export const DeleteMeetingSchema = z.object({
+  id: z.string(),
+});
+export type DeleteMeetingInput = z.infer<typeof DeleteMeetingSchema>;
